@@ -1,0 +1,6 @@
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /var/ssl/certs/certificate.dev.crt
+        keyFile: /var/ssl/certs/certificate.dev.key

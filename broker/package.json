@@ -1,0 +1,11 @@
+{
+  "name": "broker",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@pkgjs/parseargs": "latest",
+    "react": "canary",
+    "react-dom": "canary",
+    "redis": "latest"
+  }
+}

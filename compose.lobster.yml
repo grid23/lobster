@@ -1,0 +1,34 @@
+services:
+  api:
+    image: ${CR:-127.0.0.1:5000}/lobster-api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./api/api.dockerfile
+      target: live
+    environment:
+      NODE_ENV: production
+      BASEPATH: ${BASEPATH_API}
+      REDIS_SSL: ${REDIS_REPLICA_SSL:-false}
+      REDIS_URL: ${REDIS_REPLICA_URL}
+      REDIS_PORT: ${REDIS_REPLICA_PORT:-6379}
+      REDIS_TOKEN: ${REDIS_REPLICA_TOKEN}
+  broker:
+    image: ${CR:-127.0.0.1:5000}/lobster-broker:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./broker/broker.dockerfile
+      target: live
+    environment:
+      NODE_ENV: production
+      BASEPATH: ${BROKER_BROKER}
+      REDIS_URL: ${REDIS_MASTER_URL}
+      REDIS_TOKEN: ${REDIS_MASTER_TOKEN}
+  dashboard:
+    image: ${CR:-127.0.0.1:5000}/lobster-dashboard:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: ./dashboard/dashboard.dockerfile
+      target: live
+    environment:
+      NODE_ENV: production
+      BASEPATH: ${BASEPATH_DASHBOARD}

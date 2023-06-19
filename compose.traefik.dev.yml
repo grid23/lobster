@@ -1,0 +1,28 @@
+services:
+  traefik:
+    image: ${CR:-127.0.0.1:5000}/traefik:${TAG:-latest}
+    build:
+      context: ./
+      dockerfile: ./traefik/traefik.dockerfile
+      target: dev
+    command:
+      - --configFile=/etc/traefik/static.yml
+    environment:
+      - TZ=FR/Paris
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.entrypoints=secure
+      - traefik.http.routers.dashboard.rule=HostRegexp(`{name:traefik\.lobst\.(${HOSTNAME})(\.(${LTD}))?}`)
+      - traefik.http.routers.dashboard.service=api@internal
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.services.dashboard.loadbalancer.server.scheme=http
+      - traefik.http.services.dashboard.loadbalancer.server.port=8080
+      # - traefik.http.middlewares.stripper.stripprefix.prefixes=/broker,/api
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./var/log/traefik:/var/log/traefik
+      - ./traefik/traefik.static.yml:/etc/traefik/static.yml:ro
+      - ./traefik/traefik.dynamic.yml:/etc/traefik/dynamic.yml:ro

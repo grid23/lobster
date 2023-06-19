@@ -1,0 +1,59 @@
+services:
+  api:
+    image: ${CR:-127.0.0.1:5000}/lobster-api:${TAG:-dev}
+    build:
+      target: dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./api/src:/srv/src
+      - ./api/start.ts:/srv/start.ts
+      - ./api/tsconfig.json:/srv/tsconfig.json
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.entrypoints=secure
+      - traefik.http.routers.api.rule=PathPrefix("/api")
+      - traefik.http.routers.api.tls=true
+      # - traefik.http.routers.api.middlewares=stripper
+      - traefik.http.services.api.loadbalancer.server.scheme=http
+      - traefik.http.services.api.loadbalancer.server.port=80
+  broker:
+    image: ${CR:-127.0.0.1:5000}/lobster-broker:${TAG:-dev}
+    build:
+      target: dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./broker/server:/srv/server
+      - ./broker/client:/srv/client
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.broker.entrypoints=secure
+      - traefik.http.routers.broker.rule=PathPrefix("/broker")
+      - traefik.http.routers.broker.tls=true
+      # - traefik.http.routers.broker.middlewares=stripper
+      - traefik.http.services.broker.loadbalancer.server.scheme=http
+      - traefik.http.services.broker.loadbalancer.server.port=80
+  dashboard:
+    image: ${CR:-127.0.0.1:5000}/lobster-dashboard:${TAG:-dev}
+    build:
+      target: dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./dashboard/public:/srv/public
+      - ./dashboard/src:/srv/src
+      - ./dashboard/.eslintrc.json:/srv/.eslintrc.json
+      - ./dashboard/jsconfig.json:/srv/jsconfig.json
+      - ./dashboard/next.config.js:/srv/next.config.js
+      - ./dashboard/postcss.config.js:/srv/postcss.config.js
+      - ./dashboard/tailwind.config.js:/srv/tailwind.config.js
+      - ./dashboard/tsconfig.json:/srv/tsconfig.json
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ui.entrypoints=secure
+      - traefik.http.routers.ui.rule=PathPrefix("/dashboard")
+      - traefik.http.routers.ui.tls=true
+      # - traefik.http.routers.ui.middlewares=stripper
+      - traefik.http.services.ui.loadbalancer.server.scheme=http
+      - traefik.http.services.ui.loadbalancer.server.port=3000

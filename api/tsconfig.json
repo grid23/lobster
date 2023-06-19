@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "app/*": ["./src/app/*"],
+      "cmd/*": ["./src/cmd/*"],
+      "rdb/*": ["./src/rdb/*"]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+services:
+  redismaster:
+    image: ${CR:-127.0.0.1:5000}/lobster-redis-master:${TAG:-latest}
+    build:
+      context: ./
+      dockerfile: ./redis/redis.dockerfile
+      target: dev
+    volumes:
+      - redismasterdata:/data/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.redismaster.entrypoints=secure
+      - traefik.http.routers.redismaster.rule=HostRegexp(`{name:master\.redis\.lobst\.(${HOSTNAME})(\.(${LTD}))?}`)
+      - traefik.http.routers.redismaster.tls=true
+      - traefik.http.services.redismaster.loadbalancer.server.scheme=http
+      - traefik.http.services.redismaster.loadbalancer.server.port=8001
+  redisreplica:
+    image: ${CR:-127.0.0.1:5000}/lobster-redis-replica:${TAG:-latest}
+    build:
+      context: ./
+      dockerfile: ./redis/redis.dockerfile
+      target: dev
+      args:
+        - REDIS_MASTER_IP=${REDIS_MASTER_URL}
+        - REDIS_MASTER_PORT=${REDIS_MASTER_PORT:-6379}
+        - REDIS_MASTER_AUTH=${REDIS_MASTER_TOKEN}
+    depends_on:
+      - redismaster
+    volumes:
+      - redisreplicadata:/data/
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.redisreplica.entrypoints=secure
+      - traefik.http.routers.redisreplica.rule=HostRegexp(`{name:replica\.redis\.lobst\.(${HOSTNAME})(\.(${LTD}))?}`)
+      - traefik.http.routers.redisreplica.tls=true
+      - traefik.http.services.redisreplica.loadbalancer.server.scheme=http
+      - traefik.http.services.redisreplica.loadbalancer.server.port=8001
+
+volumes:
+  redismasterdata:
+  redisreplicadata:

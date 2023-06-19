@@ -1,0 +1,43 @@
+{
+  "name": "lobster",
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "api",
+    "broker",
+    "dashboard",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "dotenv": "16.0.3"
+  },
+  "compose": [
+    [ "traefik", { "dev": true } ],
+    [ "redis", { "connected": false } ],
+    "lobster"
+  ],
+  "env": {
+    "BASEPATH_API": "/api",
+    "BASEPATH_BROKER": "/broker",
+    "BASEPATH_DASHBOARD": "/dashboard",
+    "HOSTNAME": "er",
+    "LTD": "dev",
+    "REDIS_MASTER_URL": "redismaster",
+    "REDIS_MASTER_TOKEN": "",
+    "REDIS_REPLICA_URL": "redisreplica",
+    "REDIS_REPLICA_TOKEN": ""
+  },
+  "env_files": [
+    ".env",
+    [ ".env.db", { "connected": true } ],
+    [ ".dev.env", { "dev": true } ],
+    ".user.env"
+  ],
+  "scripts": {
+    "up": "npm i && node ./scripts/docker.js up --dev --build",
+    "up:connected": "npm i && node ./scripts/docker.js up --dev --build --connected",
+    "down": "npm i && node ./scripts/docker.js down --dev",
+    "mkcert": "npm i && node ./scripts/mkcert.js --key=./.cert/certificate.dev.key --cert=./.cert/certificate.dev.crt --subdomains=lobst,traefik.lobst,master.redis.lobst,replica.redis.lobst"
+  }
+}
