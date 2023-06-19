@@ -20,8 +20,10 @@ services:
       target: live
     environment:
       NODE_ENV: production
-      BASEPATH: ${BROKER_BROKER}
+      BASEPATH: ${BASEPATH_BROKER}
+      REDIS_SSL: ${REDIS_MASTER_SSL:-false}
       REDIS_URL: ${REDIS_MASTER_URL}
+      REDIS_PORT: ${REDIS_MASTER_PORT:-6379}
       REDIS_TOKEN: ${REDIS_MASTER_TOKEN}
   dashboard:
     image: ${CR:-127.0.0.1:5000}/lobster-dashboard:${TAG:-latest}

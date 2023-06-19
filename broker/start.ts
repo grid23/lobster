@@ -1,3 +1,4 @@
+
 import { parseArgs } from "@pkgjs/parseargs"
 
 async function main() {
@@ -11,8 +12,12 @@ async function main() {
 		options: {},
 	})
 
-	const { default: handler } = await import(`./commands/${command}.js`)
+	const { default: handler } = await import(`cmd/${command}.js`)
 	return handler(args)
 }
 
 main()
+	.catch(err => {
+		console.error(err)
+		process.exit(0)
+	})

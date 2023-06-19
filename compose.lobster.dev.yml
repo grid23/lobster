@@ -6,9 +6,12 @@ services:
     environment:
       NODE_ENV: development
     volumes:
-      - ./api/src:/srv/src
+      - ./api/app:/srv/app
+      - ./api/cmd:/srv/cmd
+      - ./api/lib:/srv/lib
       - ./api/start.ts:/srv/start.ts
       - ./api/tsconfig.json:/srv/tsconfig.json
+      - ./packages:/srv/packages
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.entrypoints=secure
@@ -24,8 +27,12 @@ services:
     environment:
       NODE_ENV: development
     volumes:
-      - ./broker/server:/srv/server
-      - ./broker/client:/srv/client
+      - ./broker/app:/srv/app
+      - ./broker/cmd:/srv/cmd
+      - ./broker/lib:/srv/lib
+      - ./broker/start.ts:/srv/start.ts
+      - ./broker/tsconfig.json:/srv/tsconfig.json
+      - ./packages:/srv/packages
     labels:
       - traefik.enable=true
       - traefik.http.routers.broker.entrypoints=secure

@@ -2,6 +2,9 @@
   "name": "api",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@pkgjs/parseargs": "latest",
     "bun-types": "latest",

@@ -1,4 +1,3 @@
-
 import { parseArgs } from "@pkgjs/parseargs"
 
 async function main() {
@@ -16,8 +15,7 @@ async function main() {
 	return handler(args)
 }
 
-main()
-	.catch(err => {
-		console.error(err)
-		process.exit(0)
-	})
+main().catch((err: Error) => {
+	console.error(err)
+	process.exit(0)
+})

@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
   "arrowParens": "avoid",
   "jsxBracketSameLine": false,
   "jsxSingleQuote": true,

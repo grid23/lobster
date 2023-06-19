@@ -6,9 +6,12 @@ COPY --from=busybox /bin/sh /bin/sh
 COPY --from=bun usr/local/bin/bun usr/local/bin/bun
 WORKDIR /srv
 COPY ./api/package.json ./package.json
+COPY ./packages ./packages
 RUN bun install
 COPY ./api/start.ts ./start.ts
-COPY ./api/src ./src
+COPY ./api/app ./app
+COPY ./api/cmd ./cmd
+COPY ./api/lib ./lib
 
 FROM root as dev
 CMD bun --watch ./start.ts dev --jsx=react-dev

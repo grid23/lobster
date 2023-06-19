@@ -6,15 +6,18 @@ COPY --from=busybox /bin/sh /bin/sh
 COPY --from=bun usr/local/bin/bun usr/local/bin/bun
 WORKDIR /srv
 COPY ./broker/package.json ./package.json
+COPY ./packages ./packages
 RUN bun install
-COPY ./broker/server ./server
-COPY ./broker/client ./client
+COPY ./broker/start.ts ./start.ts
+COPY ./api/app ./app
+COPY ./api/cmd ./cmd
+COPY ./api/lib ./lib
 
 FROM root as dev
-CMD bun --watch ./server/start.js dev --jsx=react-dev
+CMD bun --watch ./start.ts dev --jsx=react-dev
 
 FROM root as build
-RUN bun ./server/start.js build --jsx=react
+CMD bun --watch ./start.ts build --jsx=react
 
 FROM root as live
-CMD bun ./server/start.js live --jsx=react
+CMD bun --watch ./start.ts live --jsx=react

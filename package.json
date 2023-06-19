@@ -5,12 +5,12 @@
   "workspaces": [
     "api",
     "broker",
-    "dashboard",
     "packages/*"
   ],
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
-    "dotenv": "16.0.3"
+    "dotenv": "16.0.3",
+    "eslint-config-prettier": "^8.8.0"
   },
   "compose": [
     [ "traefik", { "dev": true } ],
