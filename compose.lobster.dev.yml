@@ -6,9 +6,11 @@ services:
     environment:
       NODE_ENV: development
     volumes:
+      - ./api/@types:/srv/@types
       - ./api/app:/srv/app
       - ./api/cmd:/srv/cmd
       - ./api/lib:/srv/lib
+      - ./api/src:/srv/src
       - ./api/start.ts:/srv/start.ts
       - ./api/tsconfig.json:/srv/tsconfig.json
       - ./packages:/srv/packages
@@ -27,9 +29,11 @@ services:
     environment:
       NODE_ENV: development
     volumes:
+      - ./broker/@types:/srv/@types
       - ./broker/app:/srv/app
       - ./broker/cmd:/srv/cmd
       - ./broker/lib:/srv/lib
+      - ./broker/src:/srv/src
       - ./broker/start.ts:/srv/start.ts
       - ./broker/tsconfig.json:/srv/tsconfig.json
       - ./packages:/srv/packages

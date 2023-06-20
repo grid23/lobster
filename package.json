@@ -5,6 +5,7 @@
   "workspaces": [
     "api",
     "broker",
+    "dashboard",
     "packages/*"
   ],
   "devDependencies": {

@@ -1,8 +1,9 @@
 import timers from "node:timers/promises"
 
 import redis from "redis"
+import type { RedisClientType as RedisClient } from "redis"
 
-export default async function createRDB(args) {
+export default async function createRDB<RedisClient>(args: Object) {
 	const protocol = JSON.parse(process.env?.REDIS_SSL ?? "false") ? "rediss:" : "redis:"
 	const host = process.env.REDIS_URL
 	const port = +(process.env.REDIS_PORT ?? "6379")
